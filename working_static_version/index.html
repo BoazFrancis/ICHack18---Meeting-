@@ -40,11 +40,11 @@
         }).done(function(data) {
 
             for (i in data) {
-                faceRectangleList.append("<li>NEW FACE</li>")
-
                 // Get face rectangle dimensions
                 var faceRectangle = data[i].faceRectangle;
                 var faceRectangleList = $('#faceRectangle');
+
+                faceRectangleList.append("<li>NEW FACE</li>")
 
                 // Append to DOM
                 for (var prop in faceRectangle) {
