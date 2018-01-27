@@ -24,7 +24,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         })
 }
 
-setInterval(() => {
+function downloadImage() {
   let canvas = document.createElement("canvas")
   canvas.width = 640
   canvas.height = 480
@@ -39,13 +39,16 @@ setInterval(() => {
     img: canvas.toDataURL(),
     name: name
   })
-  
-  // link.href = canvas.toDataURL()
 
-  // console.log(canvas.toDataURL() + '.png')
-  // link.download = new Date().valueOf() + '.png'
-  // link.click()
-}, 10000)
+  return name
+}
+
+document.getElementById('start').addEventListener('click', () => {
+  const name = downloadImage()
+  console.log(`Image is ${ame}`)
+})
+
+// setInterval(downloadImage, 10000)
   </script>
 </body>
 </html>
