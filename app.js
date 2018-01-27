@@ -50,6 +50,7 @@ app.post('/upload', (req, res) => {
     body: `{ "url": "${requestName}}" }`
   }, (err, res, data) => {
     curr = {}
+    curr.requestName = requestName
     curr.res = res
     curr.data = data
     // curr.timeStamp = timeStamp++
