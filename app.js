@@ -30,10 +30,13 @@ app.get('/upload', (req, res) => {
   let sampleData = "Hello, world!!"
   const pyshell = new PyShell('graph.py')  
 
+  let result = ""
+
   pyshell.send(sampleData)
-  pyshell.on('message', (msg) => res.send(msg))
+  pyshell.on('message', (msg) => result += msg)
   pyshell.end('end', (err) => {
     if (err) throw err
+    res.send(result)
   })
 
   // res.send(JSON.stringify(emotionData))
