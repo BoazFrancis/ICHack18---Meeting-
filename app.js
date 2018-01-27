@@ -28,7 +28,7 @@ app.post('/upload', (req, res) => {
   fs.writeFile(name, binaryData, 'binary', (err) => console.log(err))
   // console.log(`Received ${dataUrl}`)
 
-  let requestName = 'https://damp-anchorage-78125.herokuapp.com' + '/captures/' + req.body.name
+  let requestName = '"https://damp-anchorage-78125.herokuapp.com' + '/captures/' + req.body.name + '"'
 
   request({
     url: "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize",
@@ -38,7 +38,7 @@ app.post('/upload', (req, res) => {
       'Ocp-Apim-Subscription-Key': 'daecb17d1425499199cefea44c3a38c4'
     },
     body: {
-      url: requestName
+      "url": requestName
     }  
   }, (err, res, body) => {
     alert(`There are ${body.length} faces`)
