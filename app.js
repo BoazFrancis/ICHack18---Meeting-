@@ -55,7 +55,13 @@ app.post('/upload', (req, res) => {
 
     people = []
     for (i in data) {
-      people.push(data[i].scores)
+      let scores = data[i].scores
+
+      let person = {}
+      for (let prop in scores) {
+        person[prop] = scores[prop]
+      }
+      people.push(person)
     }
 
     curr.people = people
