@@ -21,7 +21,8 @@ app.post('/upload', (req, res) => {
   let data = req.body.img.replace(/^data:image\/png;base64,/, "")
   data += data.replace('+', ' ')
   let binaryData = new Buffer(data, 'base64').toString('binary')
-  let name = 'captures/' + req.body.name
+  let name = 'public/captures/photo.png'
+  // let name = 'public/captures/' + req.body.name
   
   fs.writeFile(name, binaryData, 'binary', (err) => console.log(err))
   // console.log(`Received ${dataUrl}`)
