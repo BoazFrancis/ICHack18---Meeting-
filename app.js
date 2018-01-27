@@ -4,7 +4,8 @@ const http = require('http')
 const fs = require('fs')
 
 const request = require('request')
-const rp = require('request-promise')
+
+const PyShell = require('python-shell')
 
 const app = express()
 const bodyParser = require('body-parser')
@@ -25,7 +26,17 @@ app.get('/', (req, res) => {
 
 app.get('/upload', (req, res) => {
   // Post data to DOM
-  res.send(JSON.stringify(emotionData))
+
+  let sampleData = "Hello, world!!"
+  const pyshell = new PyShell('graph.py')  
+
+  pyshell.send(sampleData)
+  pyshell.on('message', (msg) => res.send(msg))
+  pyshell.end('end', (err) => {
+    if (err) throw err
+  })
+
+  // res.send(JSON.stringify(emotionData))
 })
 
 app.post('/upload', (req, res) => {
