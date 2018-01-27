@@ -42,7 +42,7 @@ app.post('/upload', (req, res) => {
     },
     body: '{"url": "https://damp-anchorage-78125.herokuapp.com/captures/photo.png"}'
   }, (err, res, body) => {
-    alert(err)
+    console.log(err)
   })
 })
 
