@@ -47,7 +47,10 @@ app.post('/upload', (req, res) => {
       'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key': 'daecb17d1425499199cefea44c3a38c4'
     },
-    body: `{ "url": "${requestName}}" }`
+    body: {
+      url: requestName
+    },
+    json: true
   }, (err, res, data) => {
     curr = {}
     curr.requestName = requestName
