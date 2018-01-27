@@ -24,13 +24,14 @@ app.post('/upload', (req, res) => {
   let data = req.body.img.replace(/^data:image\/png;base64,/, "")
   data += data.replace('+', ' ')
   let binaryData = new Buffer(data, 'base64').toString('binary')
-  // let name = 'public/captures/photo.png'
-  let name = 'public/captures/' + req.body.name
+  let name = 'public/captures/photo.png'
+  // let name = 'public/captures/' + req.body.name
   
   fs.writeFile(name, binaryData, 'binary', (err) => console.log(err))
   // console.log(`Received ${dataUrl}`)
 
-  let requestName = 'https://damp-anchorage-78125.herokuapp.com' + '/captures/' + req.body.name 
+  let requestName = 'https://damp-anchorage-78125.herokuapp.com/captures/photo.png'
+  // let requestName = 'https://damp-anchorage-78125.herokuapp.com' + '/captures/' + req.body.name 
 
   request({
     url: "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize",
@@ -39,10 +40,7 @@ app.post('/upload', (req, res) => {
       'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key': 'daecb17d1425499199cefea44c3a38c4'
     },
-    body: {
-      url: requestName
-    },
-    json: true  
+    body: '{"url": "https://damp-anchorage-78125.herokuapp.com/captures/photo.png"}'
   }, (err, res, body) => {
     alert(err)
   })
