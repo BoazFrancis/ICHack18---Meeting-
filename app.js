@@ -38,10 +38,10 @@ app.post('/upload', (req, res) => {
       'Ocp-Apim-Subscription-Key': 'daecb17d1425499199cefea44c3a38c4'
     },
     body: {
-      url: "https://damp-anchorage-78125.herokuapp.com/captures/"
+      url: requestName
     }  
   }, (err, res, body) => {
-    console.log(body)
+    alert(`There are ${body.length} faces`)
   })
 })
 
