@@ -44,7 +44,7 @@ app.post('/upload', (req, res) => {
     },
     json: true  
   }, (err, res, body) => {
-    alert(`There are ${body.length} faces`)
+    alert(err)
   })
 })
 
