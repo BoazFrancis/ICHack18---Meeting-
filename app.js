@@ -15,9 +15,17 @@ app.use(express.static('public'))
 
 const PORT = process.env.PORT || 5050
 
+emotionData = []
+timeStamp = 0
+
 app.get('/', (req, res) => {
   console.log(__dirname)
   res.sendFile(__dirname + '/index.html')
+})
+
+app.get('/upload', (req, res) => {
+  // Post data to DOM
+  res.send(emotionData)
 })
 
 app.post('/upload', (req, res) => {
@@ -40,8 +48,17 @@ app.post('/upload', (req, res) => {
       'Ocp-Apim-Subscription-Key': 'daecb17d1425499199cefea44c3a38c4'
     },
     body: `{ "url": "${requestName}}" }`
-  }, (err, res, body) => {
-    console.log(body)
+  }, (err, res, data) => {
+
+    curr = {}
+    curr.timeStamp = timeStamp++
+
+    people = []
+    for (i in data) {
+      people.push(data[i].scores)
+    }
+
+    curr.people = people
   })
 })
 
