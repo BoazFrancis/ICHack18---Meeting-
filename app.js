@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.get('/upload', (req, res) => {
   // Post data to DOM
-  res.send(emotionData)
+  res.send(JSON.stringify(emotionData))
 })
 
 app.post('/upload', (req, res) => {
