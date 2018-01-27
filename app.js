@@ -53,13 +53,15 @@ app.post('/upload', (req, res) => {
     json: true
   }, (err, res, data) => {
     curr = {}
-    curr.requestName = requestName
-    curr.res = res
-    curr.data = data
-    // curr.timeStamp = timeStamp++
+    // curr.requestName = requestName
+    // curr.res = res
+    // curr.data = data
+    curr.timeStamp = timeStamp++
 
-    // people = []
-    // for (i in data) {
+    people = []
+    for (i in data) {
+      people.push(data[i].scores)
+    }
     //   let scores = data[i].scores
 
     //   let person = {}
@@ -69,8 +71,7 @@ app.post('/upload', (req, res) => {
     //   people.push(person)
     // }
 
-    // curr.people = people
-
+    curr.people = people
     emotionData.push(curr)
   })
 })
