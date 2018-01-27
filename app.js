@@ -59,6 +59,8 @@ app.post('/upload', (req, res) => {
     }
 
     curr.people = people
+
+    emotionData.append(curr)
   })
 })
 
