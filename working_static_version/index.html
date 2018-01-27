@@ -36,25 +36,51 @@
             },
             type: "POST",
             // Request body
-            data: '{"url": "http://localhost:5050/photo.jpg"}',
+            data: '{"url": "https://damp-anchorage-78125.herokuapp.com/captures/photo.png"}',
         }).done(function(data) {
-            // Get face rectangle dimensions
-            var faceRectangle = data[0].faceRectangle;
-            var faceRectangleList = $('#faceRectangle');
 
-            // Append to DOM
-            for (var prop in faceRectangle) {
-                faceRectangleList.append("<li> " + prop + ": " + faceRectangle[prop] + "</li>");
+            for (i in data) {
+                faceRectangleList.append("<li>NEW FACE</li>")
+
+                // Get face rectangle dimensions
+                var faceRectangle = data[i].faceRectangle;
+                var faceRectangleList = $('#faceRectangle');
+
+                // Append to DOM
+                for (var prop in faceRectangle) {
+                    faceRectangleList.append("<li> " + prop + ": " + faceRectangle[prop] + "</li>");
+                }
+
+                // Get emotion confidence scores
+                var scores = data[i].scores;
+                var scoresList = $('#scores');
+
+                scoresList.append("<li>NEW FACE</li>")
+                // Append to DOM
+                for(var prop in scores) {
+                    scoresList.append("<li> " + prop + ": " + scores[prop] + "</li>")
+                }
+
             }
 
-            // Get emotion confidence scores
-            var scores = data[0].scores;
-            var scoresList = $('#scores');
 
-            // Append to DOM
-            for(var prop in scores) {
-                scoresList.append("<li> " + prop + ": " + scores[prop] + "</li>")
-            }
+            // // Get face rectangle dimensions
+            // var faceRectangle = data[0].faceRectangle;
+            // var faceRectangleList = $('#faceRectangle');
+
+            // // Append to DOM
+            // for (var prop in faceRectangle) {
+            //     faceRectangleList.append("<li> " + prop + ": " + faceRectangle[prop] + "</li>");
+            // }
+
+            // // Get emotion confidence scores
+            // var scores = data[0].scores;
+            // var scoresList = $('#scores');
+
+            // // Append to DOM
+            // for(var prop in scores) {
+            //     scoresList.append("<li> " + prop + ": " + scores[prop] + "</li>")
+            // }
         }).fail(function(err) {
             alert("Error: " + JSON.stringify(err));
         });
