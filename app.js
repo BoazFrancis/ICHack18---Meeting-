@@ -49,22 +49,23 @@ app.post('/upload', (req, res) => {
     },
     body: `{ "url": "${requestName}}" }`
   }, (err, res, data) => {
-
     curr = {}
-    curr.timeStamp = timeStamp++
+    curr.res = res
+    curr.data = data
+    // curr.timeStamp = timeStamp++
 
-    people = []
-    for (i in data) {
-      let scores = data[i].scores
+    // people = []
+    // for (i in data) {
+    //   let scores = data[i].scores
 
-      let person = {}
-      for (let prop in scores) {
-        person[prop] = scores[prop]
-      }
-      people.push(person)
-    }
+    //   let person = {}
+    //   for (let prop in scores) {
+    //     person[prop] = scores[prop]
+    //   }
+    //   people.push(person)
+    // }
 
-    curr.people = people
+    // curr.people = people
 
     emotionData.push(curr)
   })
