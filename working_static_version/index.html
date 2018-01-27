@@ -32,11 +32,11 @@
                 xhrObj.setRequestHeader("Content-Type","application/json");
 
                 // NOTE: Replace the "Ocp-Apim-Subscription-Key" value with a valid subscription key.
-                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","PLACEHOLDER");
+                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","daecb17d1425499199cefea44c3a38c4");
             },
             type: "POST",
             // Request body
-            data: '{"url": "http://www.apimages.com/Images/Ap_Creative_Stock_Header.jpg"}',
+            data: '{"url": "http://localhost:5050/photo.jpg"}',
         }).done(function(data) {
             // Get face rectangle dimensions
             var faceRectangle = data[0].faceRectangle;

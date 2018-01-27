@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
   <video id="video" width="640" height="480" autoplay></video>
@@ -12,7 +13,39 @@
   <canvas id="canvas" width="640" height="480"></canvas>
   <div class="result"></div>
 
-  <script src="script.js"></script>
+  <script>
+  let video = document.getElementById('video')
+
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia( { video: true })
+        .then((stream) => {
+          video.src = window.URL.createObjectURL(stream)
+          video.play()
+        })
+}
+
+setInterval(() => {
+  let canvas = document.createElement("canvas")
+  canvas.width = 640
+  canvas.height = 480
+
+  let context = canvas.getContext('2d')
+  context.drawImage(video, 0, 0, 640, 480)
+
+  let link = document.createElement("a")
+  let name = new Date().valueOf() + '.png'
+
+  $.post('/upload', {
+    img: canvas.toDataURL(),
+    name: name
+  })
+  
+  // link.href = canvas.toDataURL()
+
+  // console.log(canvas.toDataURL() + '.png')
+  // link.download = new Date().valueOf() + '.png'
+  // link.click()
+}, 10000)
   </script>
 </body>
 </html>
