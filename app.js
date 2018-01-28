@@ -40,16 +40,16 @@ app.get('/upload', (req, res) => {
     numPeople = data[i].people.length
     for (j = 0; j < numPeople; j++) {
       person = data[i].people[j]
-      score += person['anger'] * (-10)
-      score += person['contempt'] * (-10)
-      score += person['disgust'] * (-10)
-      score += person['fear'] * (-10)
-      score += person['happiness'] * 10
-      score += person['sadness'] * (-5)
-      score += person['surprise'] * 5
+      score += Number(person['anger']) * (-10)
+      score += Number(person['contempt']) * (-10)
+      score += Number(person['disgust']) * (-10)
+      score += Number(person['fear']) * (-10)
+      score += Number(person['happiness']) * 10
+      score += Number(person['sadness']) * (-5)
+      score += Number(person['surprise']) * 5
     }
 
-    score /= numPeople
+    score = score / numPeople
     scores.push(score)
     times.push(i)
     score = 0
