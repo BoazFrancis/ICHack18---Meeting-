@@ -257,7 +257,8 @@ body {
         data: {
           img: canvas.toDataURL(),
           name: name
-        }
+        },
+        timeout: 50000
       }).done((data) => {
         document.getElementById('counter').innerHTML = `Recorded ${count++} images`
       })
