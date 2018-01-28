@@ -53,10 +53,12 @@ app.post('/upload', (req, res) => {
   let data = req.body.img.replace(/^data:image\/png;base64,/, "")
   data += data.replace('+', ' ')
   let binaryData = new Buffer(data, 'base64').toString('binary')
-  let name = CAPTURE_DIR + req.body.name
+  let name = __dirname + '/' + CAPTURE_DIR + req.body.name
   
   // Save image file
-  fs.writeFile(name, binaryData, 'binary', (err) => console.log(err))
+  fs.writeFile(name, binaryData, 'binary', (err) => {
+    console.log(`Error in saving: ${err}`)
+  })
   
   // Submit image file to EmotionAPI
   let requestName = BASE_URL + '/captures/' + req.body.name 
