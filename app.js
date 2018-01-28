@@ -77,7 +77,7 @@ app.post('/upload', (req, res) => {
     let currEmotions = {}
     currEmotions.timeStamp = timeStamp++
 
-    let people = {}
+    let people = []
     for (i in data) {
       people.push(data[i].scores)
     }
