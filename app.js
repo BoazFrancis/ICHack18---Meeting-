@@ -71,6 +71,7 @@ app.post('/upload', (req, res) => {
     body: {
       url: requestName
     },
+    timeout: 50000,
     json: true
   }, (err, res, data) => {
     // Collate current emotions 
