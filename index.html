@@ -8,10 +8,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-  <video id="video" width="640" height="480" autoplay></video>
+  <video style="position: fixed; z-index: -1; display: none;" id="video" width="640" height="480" autoplay></video>
   <button id="start">Start Capture</button>
-  <canvas id="canvas" width="640" height="480"></canvas>
-  <div class="result"></div>
+  <button id="end">End Capture</button>
+
+  <iframe id="graph" width="900" height="800" frameborder="0" scrolling="no" src="//plot.ly/~ichack18/0.embed" style="display: none;"></iframe> 
 
   <script>
   let video = document.getElementById('video')
@@ -43,12 +44,22 @@ function downloadImage() {
   return name
 }
 
+let capturer = 0
+
 document.getElementById('start').addEventListener('click', () => {
-  const name = downloadImage()
-  console.log(`Image is ${name}`)
+  capturer = setInterval(downloadImage, 10000)
 })
 
-// setInterval(downloadImage, 10000)
+document.getElementById('end').addEventListener('click', () => {
+  clearInterval(capturer)
+  $.ajax({
+    url: 'https://damp-anchorage-78125.herokuapp.com/upload',
+    type: 'GET',
+    data: ''
+  }).done((data) => {
+    document.getElementById('graph').style.display = "none"
+  })
+})
   </script>
 </body>
 </html>
