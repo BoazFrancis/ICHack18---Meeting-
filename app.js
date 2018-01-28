@@ -142,7 +142,7 @@ app.get('/upload', (req, res) => {
 
   /* FROM BOAS */
   // Post data to DOM
-  let data = emotionData
+  let data = pitchData
 
   let person;
   let numPeople;
