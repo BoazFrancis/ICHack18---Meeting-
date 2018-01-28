@@ -19,6 +19,7 @@
   "homepage": "https://github.com/BoazFrancis/ICHack18---Meeting-#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
     "express": "^4.16.2",
     "python-shell": "^0.4.0",
     "request": "^2.83.0",

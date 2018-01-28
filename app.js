@@ -12,6 +12,7 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '16mb' }))
 app.use(bodyParser.urlencoded({ extended: false, limit: '16mb'}))
 
+// app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 const PORT = process.env.PORT || 5050
@@ -20,7 +21,7 @@ emotionData = []
 timeStamp = 0
 
 app.get('/', (req, res) => {
-  console.log(__dirname)
+  // res.render('index', {})
   res.sendFile(__dirname + '/index.html')
 })
 
