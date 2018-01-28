@@ -40,7 +40,7 @@ app.get('/upload', (req, res) => {
 
   for (i = 0; i < data.length; i++) {
     numPeople = data[i].people.length
-    html += `<h1>Time ${i}</h1>`
+    html += `<h1>numpeople ${numPeople}</h1>`
     for (j = 0; j < numPeople; j++) {
       person = data[i].people[j]
       score += Number(person['anger']) * (-10)
