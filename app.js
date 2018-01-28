@@ -42,8 +42,8 @@ app.use(express.static('public'))
 
 // Default route
 app.get('/', (req, res) => {
-  pitchData = []
-  timeStamp = 0
+  // pitchData = []
+  // timeStamp = 0
   res.sendFile(__dirname + '/index.html')
 })
 
