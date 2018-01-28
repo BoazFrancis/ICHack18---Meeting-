@@ -26,21 +26,60 @@ app.get('/', (req, res) => {
 })
 
 app.get('/upload', (req, res) => {
+  /* FROM BOAS */
   // Post data to DOM
-  let data = JSON.stringify(emotionData)
-  const pyshell = new PyShell('graph.py', { args: [data]})  
+  let data = emotionData
 
-  let result = ""
+  let person;
+  let numPeople;
+  let score = 0
+  let scores = []
+  let times = []
 
-  pyshell.on('message', (msg) => result += msg)
-  pyshell.end((err) => {
-    if (err) {
-      // throw err
-      res.send(err)
-    } else {
-      res.send(result)
+  for (i = 0; i < data.length; i++) {
+    numPeople = data[i].people.length
+    for (j = 0; j < numPeople; j++) {
+      person = data[i].people[j]
+      score += person['anger'] * (-10)
+      score += person['contempt'] * (-10)
+      score += person['disgust'] * (-10)
+      score += person['fear'] * (-10)
+      score += person['happiness'] * 10
+      score += person['sadness'] * (-5)
+      score += person['surprise'] * 5
     }
-  })
+
+    score /= numPeople
+    scores.push(score)
+    times.push(i)
+    score = 0
+  }
+
+  let html = ""
+
+  for (i in scores) {
+    html += `Time ${times[i] * 30} \t Score ${scores[i]}\n`
+  }
+
+  res.send(html)
+
+  /* FROM BOAS */
+
+  // // Post data to DOM
+  // let data = JSON.stringify(emotionData)
+  // const pyshell = new PyShell('graph.py', { args: [data]})  
+
+  // let result = ""
+
+  // pyshell.on('message', (msg) => result += msg)
+  // pyshell.end((err) => {
+  //   if (err) {
+  //     // throw err
+  //     res.send(err)
+  //   } else {
+  //     res.send(result)
+  //   }
+  // })
 
   // res.send(JSON.stringify(emotionData))
 })
