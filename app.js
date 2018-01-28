@@ -35,8 +35,13 @@ app.get('/upload', (req, res) => {
   pyshell.send(sampleData)
   pyshell.on('message', (msg) => result += msg)
   pyshell.end((err) => {
-    if (err) throw err
-    res.send(result)
+    if (err) {
+      // throw err
+      res.send("ERROR")
+    } else {
+      res.send(result)
+    }
+    // res.send(result)
   })
 
   // res.send(JSON.stringify(emotionData))
