@@ -53,7 +53,7 @@ app.post('/upload', (req, res) => {
   let data = req.body.img.replace(/^data:image\/png;base64,/, "")
   data += data.replace('+', ' ')
   let binaryData = new Buffer(data, 'base64').toString('binary')
-  let name = __dirname + '/' + CAPTURE_DIR + req.body.name
+  let name = CAPTURE_DIR + req.body.name
   
   // Save image file
   fs.writeFile(name, binaryData, 'binary', (err) => {
@@ -75,6 +75,11 @@ app.post('/upload', (req, res) => {
     },
     json: true
   }, (err, res, data) => {
+
+    if (err) {
+      console.log(`Error in EmotionAPI: ${}`)
+    }
+
     // Collate current emotions 
     let currEmotions = {}
     currEmotions.timeStamp = timeStamp++
