@@ -28,7 +28,7 @@ app.get('/upload', (req, res) => {
   // Post data to DOM
 
   let sampleData = "Hello, world!!"
-  const pyshell = new PyShell('graph.py', { arg: [sampleData]})  
+  const pyshell = new PyShell('graph.py', { args: [sampleData]})  
 
   let result = ""
 
