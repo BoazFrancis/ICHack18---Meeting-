@@ -37,7 +37,7 @@ app.get('/upload', (req, res) => {
   pyshell.end((err) => {
     if (err) {
       // throw err
-      res.send("ERROR")
+      res.send(err)
     } else {
       res.send(result)
     }
