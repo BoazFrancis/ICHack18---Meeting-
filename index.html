@@ -12,6 +12,8 @@
   <button id="start">Start Capture</button>
   <button id="end">End Capture</button>
 
+  <div id="counter"></div>
+
   <iframe id="graph" width="900" height="800" frameborder="0" scrolling="no" src="//plot.ly/~ichack18/0.embed" style="display: none;"></iframe> 
 
   <script>
@@ -24,6 +26,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           video.play()
         })
 }
+
+let count = 0
 
 function downloadImage() {
   let canvas = document.createElement("canvas")
@@ -41,7 +45,7 @@ function downloadImage() {
     name: name
   })
 
-  return name
+  document.getElementById('counter').innerHTML = `Recoreded ${count++} images`
 }
 
 let capturer = 0
