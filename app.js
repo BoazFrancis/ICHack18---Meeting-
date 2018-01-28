@@ -63,6 +63,16 @@ app.get('/upload', (req, res) => {
     type: 'scatter'
   }
 
+  let graphLayout = {
+    title: "Plotting Your Pitch",
+    xaxis: {
+      title: "Time elapsed (in seconds)",
+    },
+    yaxis: {
+      title: "Engagement Score"
+    }
+  }
+
   let graphParams = {
     filename: 'basic-line',
     fileopt: 'overwrite'
