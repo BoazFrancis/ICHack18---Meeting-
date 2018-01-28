@@ -254,7 +254,6 @@ body {
       $.ajax({
         url: 'https://damp-anchorage-78125.herokuapp.com/upload',
         type: 'POST',
-        timeout: 10000000,
         data: {
           img: canvas.toDataURL(),
           name: name
