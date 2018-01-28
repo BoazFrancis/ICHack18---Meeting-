@@ -4,66 +4,97 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>PitchPlot</title>
+
+  <!-- TODO add Bootstrap here (replace this line)-->
+  <style>
+    /* TODO Add styles here */
+    
+    /* Hide video stream */
+    #video {
+      position: fixed; 
+      z-index: -1; 
+      display: none;
+    }
+  </style>
+
+  <!-- TODO add Bootstrap JS here (replace this line -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
   <video style="position: fixed; z-index: -1; display: none;" id="video" width="640" height="480" autoplay></video>
   <button id="start">Start Capture</button>
   <button id="end">End Capture</button>
-
   <div id="counter"></div>
 
   <iframe id="graph" width="900" height="800" frameborder="0" scrolling="no" ></iframe> 
 
   <script>
-  let video = document.getElementById('video')
+    // Global variables
+    let count = 1
+    let capturer = 0
+    const WIDTH = 640
+    const HEIGHT = 480
+    const INTERVAL_MILLIS = 3000
+    const PLOTLY_URL = '//plot.ly/~ichack18/0.embed'
 
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  navigator.mediaDevices.getUserMedia( { video: true })
-        .then((stream) => {
-          video.src = window.URL.createObjectURL(stream)
-          video.play()
-        })
-}
+    // DOM elements
+    const video = document.getElementById('video')
+    const btnStart = document.getElementById('start')
+    const btnEnd = document.getElementById('end')
+    const graph = document.getElementById('graph')
 
-let count = 1
+    // Asks user for webcam approval
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia( { video: true })
+            .then((stream) => {
+              video.src = window.URL.createObjectURL(stream)
+              video.play()
+            })
+    }
 
-function downloadImage() {
-  let canvas = document.createElement("canvas")
-  canvas.width = 640
-  canvas.height = 480
+    function downloadImage() {
+      // Create mock coanvas
+      const canvas = document.createElement("canvas")
+      canvas.width = WIDTH
+      canvas.height = HEIGHT
 
-  let context = canvas.getContext('2d')
-  context.drawImage(video, 0, 0, 640, 480)
+      // Acquire context
+      const context = canvas.getContext('2d')
+      context.drawImage(video, 0, 0, WIDTH, HEIGHT)
 
-  let link = document.createElement("a")
-  let name = new Date().valueOf() + '.png'
+      // Instantiate download
+      const name = new Date().valueOf() + '.png'
 
-  $.post('/upload', {
-    img: canvas.toDataURL(),
-    name: name
-  })
+      // Ajax post request to upload API
+      $.post('/upload', {
+        img: canvas.toDataURL(),
+        name: name
+      })
 
-  document.getElementById('counter').innerHTML = `Recoreded ${count++} images`
-}
+      // TODO remove before deployment
+      document.getElementById('counter').innerHTML = `Recorded ${count++} images`
+    }
+    
+    // Action listener for start button
+    btnStart.addEventListener('click', () => {
+      capturer = setInterval(downloadImage, INTERVAL_MILLIS)
+    })
 
-let capturer = 0
+    // Action listener for end button
+    btnEnd.addEventListener('click', () => {
+      // Clear di
+      clearInterval(capturer)
 
-document.getElementById('start').addEventListener('click', () => {
-  capturer = setInterval(downloadImage, 3000)
-})
-
-document.getElementById('end').addEventListener('click', () => {
-  clearInterval(capturer)
-  $.ajax({
-    url: 'https://damp-anchorage-78125.herokuapp.com/upload',
-    type: 'GET',
-    data: ''
-  }).done((data) => {
-    document.getElementById('graph').src = "//plot.ly/~ichack18/0.embed"
-  })
-})
+      // Ajax request to get graph
+      $.ajax({
+        url: 'https://damp-anchorage-78125.herokuapp.com/upload',
+        type: 'GET',
+        data: ''
+      }).done((data) => {
+        graph.src = PLOTLY_URL
+      })
+    })
   </script>
 </body>
 </html>
