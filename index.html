@@ -168,14 +168,39 @@ body {
   <!-- TODO add Bootstrap JS here (replace this line -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<body>
+<body class="text-center">
   <video style="position: fixed; z-index: -1; display: none;" id="video" width="640" height="480" autoplay></video>
   <button id="start">Start Capture</button>
   <button id="end">End Capture</button>
   <div id="counter"></div>
 
   <iframe id="graph" width="900" height="800" frameborder="0" scrolling="no" ></iframe> 
+ <div class="cover-container d-flex h-50 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <img src="27400195_1984974394850858_1368112112_n.png" class="plotimg" >
+        </div>
+      </header>
 
+      <main role="main" class="inner cover">
+        <p class="lead"> When you are ready to start the meeting, press the Start button to commence monitoring your pitch. Once you have finished the 
+         meeting, press Stop to find out how the pitch was recieved by the audience.</p>
+         <br>
+        <p class="lead">
+          <a href="#" class="start" id="start"><span style="font-weight:bold">Start</span></a>
+          <br>
+          <br>
+          <a href="#" class="start" id="end"><span style="font-weight:bold">Stop</span></a>
+
+        </p>  
+      </main>
+    
+      <footer class="mastfoot mt-auto">
+        <div class="inner1">
+          <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        </div>
+      </footer>
+    </div>
   <script>
     // Global variables
     let count = 1
