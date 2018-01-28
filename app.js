@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false, limit: '16mb'}))
 // app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
+const plotly = require('plotly')('ichack18', 'Y7wvDu5Xh9kJ2g4TL2dH')
+
 const PORT = process.env.PORT || 5050
 
 emotionData = []
@@ -54,13 +56,29 @@ app.get('/upload', (req, res) => {
     times.push(i)
     score = 0
   }
-  let html = ""
 
-  for (i in scores) {
-    html += `Time ${times[i] * 30} \t Score ${scores[i]} <br />`
+  const trace = {
+    x: times,
+    y: scores,
+    type: 'scatter'
   }
 
-  res.send(html)
+  let graphParams = {
+    filename: 'basic-line',
+    fileopt: 'overwrite'
+  }
+
+  plotly.plot([trace], graphParams, (err, msg) => {
+    res.send(msg)
+  })
+
+  // let html = ""
+
+  // for (i in scores) {
+  //   html += `Time ${times[i] * 30} \t Score ${scores[i]} <br />`
+  // }
+
+  // res.send(html)
 
   /* FROM BOAS */
 
