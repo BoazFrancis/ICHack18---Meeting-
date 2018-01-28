@@ -197,7 +197,7 @@ body {
           <a href="#" class="start" id="start"><span style="font-weight:bold">Start</span></a>
           <br>
           <br>
-          <a href="#" class="start" id="end"><span style="font-weight:bold">Stop</span></a>
+          <a href="#" class="start" id="end" disabled><span style="font-weight:bold">Stop</span></a>
 
         </p>  
       </main>
@@ -251,17 +251,29 @@ body {
       const name = new Date().valueOf() + '.png'
 
       // Ajax post request to upload API
-      $.post('/upload', {
-        img: canvas.toDataURL(),
-        name: name
-      })
+      $.ajax({
+        url: 'https://damp-anchorage-78125.herokuapp.com/upload',
+        type: 'POST',
+        timeout: 10000000,
+        data: {
+          img: canvas.toDataURL(),
+          name: name
+        }
+      }).done((data) => {
+        document.getElementById('counter').innerHTML = `Recorded ${count++} images`
+      }
+      // $.post('/upload', {
+      //   img: canvas.toDataURL(),
+      //   name: name
+      // })
 
       // TODO remove before deployment
-      document.getElementById('counter').innerHTML = `Recorded ${count++} images`
     }
     
     // Action listener for start button
     btnStart.addEventListener('click', () => {
+      btnStart.disabled = true
+      btnEnd.disabled = false
       capturer = setInterval(downloadImage, INTERVAL_MILLIS)
     })
 
