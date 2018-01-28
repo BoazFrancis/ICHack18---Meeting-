@@ -1,88 +1,198 @@
+/* Dependencies */
 const express = require('express')
 const path = require('path')
 const http = require('http')
 const fs = require('fs')
-
 const request = require('request')
-
-const PyShell = require('python-shell')
-
-const app = express()
 const bodyParser = require('body-parser')
+
+/* Global variables */
+const PORT = process.env.PORT || 5050
+const BASE_URL = 'https://damp-anchorage-78125.herokuapp.com'
+const PLOTLY_USERNAME = 'ichack18'
+const PLOTLY_PASSWORD = 'Y7wvDu5Xh9kJ2g4TL2dH'
+const CAPTURE_DIR = 'public/captures/'
+const EMOTION_API_URL = 'https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize'
+const AZURE_KEY = 'daecb17d1425499199cefea44c3a38c4'
+const EMOTION_WEIGHTS = {
+  'anger': -10,
+  'contempt': -10,
+  'digust': -10,
+  'fear': -10,
+  'happy': 10,
+  'surprise': 5,
+  'sad': -5,
+  'neutral': 0
+}
+
+let pitchData = []
+let timeStamp = 0
+
+/* Express app setup */
+const app = express()
+
+// Handle upload limits
 app.use(bodyParser.json({ limit: '16mb' }))
 app.use(bodyParser.urlencoded({ extended: false, limit: '16mb'}))
 
-// app.set('view engine', 'ejs')
+// Set captures folder as public for EmotionAPI to work
 app.use(express.static('public'))
 
-const plotly = require('plotly')('ichack18', 'Y7wvDu5Xh9kJ2g4TL2dH')
+/* Routes */
 
-const PORT = process.env.PORT || 5050
-
-emotionData = []
-timeStamp = 0
-
+// Default route
 app.get('/', (req, res) => {
-  // res.render('index', {})
-  emotionData = []
+  pitchData = []
   res.sendFile(__dirname + '/index.html')
 })
 
+// Post request route: uploading webcam screenshots
+app.post('/upload', (req, res) => {
+  // Convert image's 'base64URL' to actual image file
+  let data = req.body.img.replace(/^data:image\/png;base64,/, "")
+  data += data.replace('+', ' ')
+  let binaryData = new Buffer(data, 'base64').toString('binary')
+  let name = CAPTURE_DIR + req.body.name
+  
+  // Save image file
+  fs.writeFile(name, binaryData, 'binary', (err) => console.log(err))
+  
+  // Submit image file to EmotionAPI
+  let requestName = BASE_URL + '/captures/' + req.body.name 
+
+  request({
+    url: EMOTION_API_URL,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Ocp-Apim-Subscription-Key': AZURE_KEY
+    },
+    body: {
+      url: requestName
+    },
+    json: true
+  }, (err, res, data) => {
+    // Collate current emotions 
+    let currEmotions = {}
+    currEmotions.timeStamp = timeStamp++
+
+    curr.people = data.map((people) => people.scores)
+    // people = []
+    // for (i in data) {
+    //   people.push(data[i].scores)
+    // }
+
+    // Accumulate current emotion data
+    pitchData.push(curr)
+  })
+})
+
+// Get request route: plot graph and load result
 app.get('/upload', (req, res) => {
-  /* FROM BOAS */
-  // Post data to DOM
-  let data = emotionData
+  // Initialise plot.ly
+  const plotly = require('plotly')(PLOTLY_USERNAME, PLOTLY_PASSWORD)
+  const times = []
+  const scores = []
 
-  let person;
-  let numPeople;
-  let score = 0
-  let scores = []
-  let times = []
-
-  for (i = 0; i < data.length; i++) {
-    numPeople = data[i].people.length
-    for (j = 0; j < numPeople; j++) {
-      person = data[i].people[j]
-      score += person['anger'] * (-10)
-      score += person['contempt'] * (-10)
-      score += person['disgust'] * (-10)
-      score += person['fear'] * (-10)
-      score += person['happiness'] * 10
-      score += person['sadness'] * (-10)
-      score += person['surprise'] * 5
+  // Calculate scores from emotions
+  for (let x in pitchData) {
+    let people = pitchData[x].people
+    let score = 0
+    for (let y in people) {
+      let person = people[y]
+      for (let emotion in person) {
+        score += person[emotion] * EMOTION_WEIGHTS[emotion]
+      }
     }
 
-    score = score / numPeople
+    // Compute average for timeslot
+    score /= people.length
+    times.push(x)
     scores.push(score)
-    times.push(i)
-    score = 0
   }
 
-  const trace = {
+  // Define plotting variables
+  const dataset = {
     x: times,
     y: scores,
     type: 'scatter'
   }
 
-  let graphLayout = {
-    title: "Plotting Your Pitch",
+  const graphLayout = {
+    title: 'Plotting Your Pitch',
     xaxis: {
-      title: "Time elapsed (in seconds)",
+      title: 'Time elapsed (in seconds)'
     },
     yaxis: {
-      title: "Engagement Score"
+      title: 'Engagement Score'
     }
   }
 
-  let graphParams = {
+  const graphParams = {
     layout: graphLayout,
-    filename: 'basic-line',
+    filename: 'Plotting Your Pitch',
     fileopt: 'overwrite'
   }
 
-  plotly.plot([trace], graphParams, (err, msg) => {
-    res.send(msg)
+  plotly.plot([dataset], graphParams, (err, msg) => {
+    if (err) console.log(err)
+    else res.send(msg)
   })
+
+  // /* FROM BOAS */
+  // // Post data to DOM
+  // let data = emotionData
+
+  // let person;
+  // let numPeople;
+  // let score = 0
+  // let scores = []
+  // let times = []
+
+  // for (i = 0; i < data.length; i++) {
+  //   numPeople = data[i].people.length
+  //   for (j = 0; j < numPeople; j++) {
+  //     person = data[i].people[j]
+  //     score += person['anger'] * (-10)
+  //     score += person['contempt'] * (-10)
+  //     score += person['disgust'] * (-10)
+  //     score += person['fear'] * (-10)
+  //     score += person['happiness'] * 10
+  //     score += person['sadness'] * (-10)
+  //     score += person['surprise'] * 5
+  //   }
+
+  //   score = score / numPeople
+  //   scores.push(score)
+  //   times.push(i)
+  //   score = 0
+  // }
+
+  // const trace = {
+  //   x: times,
+  //   y: scores,
+  //   type: 'scatter'
+  // }
+
+  // let graphLayout = {
+  //   title: "Plotting Your Pitch",
+  //   xaxis: {
+  //     title: "Time elapsed (in seconds)",
+  //   },
+  //   yaxis: {
+  //     title: "Engagement Score"
+  //   }
+  // }
+
+  // let graphParams = {
+  //   layout: graphLayout,
+  //   filename: 'basic-line',
+  //   fileopt: 'overwrite'
+  // }
+
+  // plotly.plot([trace], graphParams, (err, msg) => {
+  //   res.send(msg)
+  // })
 
   // let html = ""
 
@@ -113,52 +223,5 @@ app.get('/upload', (req, res) => {
   // res.send(JSON.stringify(emotionData))
 })
 
-app.post('/upload', (req, res) => {
-  let data = req.body.img.replace(/^data:image\/png;base64,/, "")
-  data += data.replace('+', ' ')
-  let binaryData = new Buffer(data, 'base64').toString('binary')
-  // let name = 'public/captures/photo.png'
-  let name = 'public/captures/' + req.body.name
-  
-  fs.writeFile(name, binaryData, 'binary', (err) => console.log(err))
-  // console.log(`Received ${dataUrl}`)
-
-  let requestName = 'https://damp-anchorage-78125.herokuapp.com' + '/captures/' + req.body.name 
-
-  request({
-    url: "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize",
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      'Ocp-Apim-Subscription-Key': 'daecb17d1425499199cefea44c3a38c4'
-    },
-    body: {
-      url: requestName
-    },
-    json: true
-  }, (err, res, data) => {
-    curr = {}
-    // curr.requestName = requestName
-    // curr.res = res
-    // curr.data = data
-    curr.timeStamp = timeStamp++
-
-    people = []
-    for (i in data) {
-      people.push(data[i].scores)
-    }
-    //   let scores = data[i].scores
-
-    //   let person = {}
-    //   for (let prop in scores) {
-    //     person[prop] = scores[prop]
-    //   }
-    //   people.push(person)
-    // }
-
-    curr.people = people
-    emotionData.push(curr)
-  })
-})
-
+// Express app listening on port
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
