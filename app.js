@@ -26,9 +26,8 @@ app.get('/', (req, res) => {
 
 app.get('/upload', (req, res) => {
   // Post data to DOM
-
-  let sampleData = "Hello, world!!"
-  const pyshell = new PyShell('graph.py', { args: [sampleData]})  
+  let data = JSON.stringify(emotionData)
+  const pyshell = new PyShell('graph.py', { args: [data]})  
 
   let result = ""
 
@@ -40,7 +39,6 @@ app.get('/upload', (req, res) => {
     } else {
       res.send(result)
     }
-    // res.send(result)
   })
 
   // res.send(JSON.stringify(emotionData))
