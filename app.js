@@ -24,6 +24,7 @@ timeStamp = 0
 
 app.get('/', (req, res) => {
   // res.render('index', {})
+  emotionData = []
   res.sendFile(__dirname + '/index.html')
 })
 
