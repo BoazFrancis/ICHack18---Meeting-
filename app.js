@@ -74,6 +74,7 @@ app.get('/upload', (req, res) => {
   }
 
   let graphParams = {
+    layout: graphLayout,
     filename: 'basic-line',
     fileopt: 'overwrite'
   }
