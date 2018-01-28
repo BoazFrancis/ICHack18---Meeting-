@@ -78,10 +78,6 @@ app.post('/upload', (req, res) => {
     currEmotions.timeStamp = timeStamp++
 
     currEmotions.people = data.map((people) => people.scores)
-    // people = []
-    // for (i in data) {
-    //   people.push(data[i].scores)
-    // }
 
     // Accumulate current emotion data
     pitchData.push(currEmotions)
@@ -116,7 +112,7 @@ app.get('/upload', (req, res) => {
 
     score = score / numPeople
     scores.push(score)
-    times.push(i)
+    times.push(i * 10)
     score = 0
   }
 
