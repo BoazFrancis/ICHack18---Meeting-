@@ -4,15 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content="">
-  <meta name="author" content="">
   <title>PitchPlot</title>
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-  <!-- TODO add Bootstrap here (replace this line)-->
-  <style>
-    /*
+    <style>
+      
+      /*
  * Globals
  */
 
@@ -43,7 +41,8 @@ a:hover {
 
 html,
 body {
-  height: 100%;
+  width: 100%;
+  height: auto;
   background-color: whitesmoke;
 }
 
@@ -60,7 +59,7 @@ body {
 }
 
 .cover-container {
-  max-width: 42em;
+  max-width: 80%;
 }
 
 
@@ -112,6 +111,7 @@ body {
  */
 .cover {
   padding: 0 1.5rem;
+  max-width: 42em;
 }
 .cover .btn-lg {
   padding: .75rem 1.25rem;
@@ -158,35 +158,27 @@ body {
   width: 150px;
   height: 80px;
 } 
-    
-    /* Hide video stream */
-    #video {
-      position: fixed; 
-      z-index: -1; 
-      display: none;
-    }
-  </style>
 
-  <!-- TODO add Bootstrap JS here (replace this line -->
-  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
-  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script> -->
+.black {
+  color :#000000;
+}
+    </style>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
-
-
- <body class="text-center">
+<body class="text-center">
   <video style="position: fixed; z-index: -1; display: none;" id="video" width="640" height="480" autoplay></video>
-<div id="counter"></div>
-    <div class="cover-container d-flex h-50 p-3 mx-auto flex-column">
+
+<div class="cover-container d-flex h-50 p-3 mx-auto flex-column">
       <header class="masthead mb-auto">
         <div class="inner">
-          <img src="https://imgur.com/KAkAMCM.png" class="plotimg" >
+          <img src="https://i.imgur.com/KAkAMCM.png" class="plotimg" >
         </div>
       </header>
 
       <main role="main" class="inner cover">
-        <p class="lead"> When you are ready to start the meeting, press the Start button to commence monitoring your pitch. Once you have finished the 
+        <p class="black">When you are ready to start the meeting, press the Start button to commence monitoring your pitch. Once you have finished the 
          meeting, press Stop to find out how the pitch was recieved by the audience.</p>
          <br>
         <p class="lead">
@@ -197,6 +189,24 @@ body {
 
         </p>  
       </main>
+
+  <div id="counter"></div>
+    
+        <iframe id="graph" width="auto" height="800" frameborder="0" scrolling="no" ></iframe> 
+
+    
+      <footer class="mastfoot mt-auto">
+        <div class="inner1">
+          <!-- <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p> -->
+        </div>
+      </footer>
+    </div>
+
+
+ <!--  <button id="start">Start Capture</button>
+  <button id="end">End Capture</button> -->
+
+
 
       <div>
           <iframe id="graph" width="900" height="800" frameborder="0" scrolling="no" ></iframe> 
