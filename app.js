@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 app.get('/upload', (req, res) => {
   /* FROM BOAS */
   // Post data to DOM
+  const plotly = require('plotly')
   let data = emotionData
 
   let person;
@@ -54,13 +55,26 @@ app.get('/upload', (req, res) => {
     times.push(i)
     score = 0
   }
-  let html = ""
 
-  for (i in scores) {
-    html += `Time ${times[i] * 30} \t Score ${scores[i]} <br />`
+  const dataset = {
+    x: times,
+    y: scores,
+    type: 'scatter'
   }
 
-  res.send(html)
+  const graphparams = {
+    filename: 'basic-line',
+    fileopt: 'overwrite'
+  }
+
+  plotly.plot([dataset], graphparams, (err, msg) => res.send(msg))
+  // let html = ""
+
+  // for (i in scores) {
+  //   html += `Time ${times[i] * 30} \t Score ${scores[i]} <br />`
+  // }
+
+  // res.send(html)
 
   /* FROM BOAS */
 
