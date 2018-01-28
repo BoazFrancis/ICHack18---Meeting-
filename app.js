@@ -36,11 +36,8 @@ app.get('/upload', (req, res) => {
   let scores = []
   let times = []
 
-  res.send(data)
-
   for (i = 0; i < data.length; i++) {
     numPeople = data[i].people.length
-    html += `<h1>numpeople ${numPeople}</h1>`
     for (j = 0; j < numPeople; j++) {
       person = data[i].people[j]
       score += person['anger'] * (-10)
@@ -50,25 +47,20 @@ app.get('/upload', (req, res) => {
       score += person['happiness'] * 10
       score += person['sadness'] * (-5)
       score += person['surprise'] * 5
-
-      html += `<h3>Score = ${score}</h3>`
     }
 
-    // score = score / numPeople
-    // scores.push(score)
-    // times.push(i)
-    // score = 0
+    score = score / numPeople
+    scores.push(score)
+    times.push(i)
+    score = 0
+  }
+  let html = ""
+
+  for (i in scores) {
+    html += `Time ${times[i] * 30} \t Score ${scores[i]} <br />`
   }
 
-  // res.send(html)
-
-  // let html = ""
-
-  // for (i in scores) {
-  //   html += `Time ${times[i] * 30} \t Score ${scores[i]}\n`
-  // }
-
-  // res.send(html)
+  res.send(html)
 
   /* FROM BOAS */
 
