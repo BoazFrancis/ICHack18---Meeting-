@@ -92,136 +92,108 @@ app.post('/upload', (req, res) => {
 app.get('/upload', (req, res) => {
   // Initialise plot.ly
   const plotly = require('plotly')(PLOTLY_USERNAME, PLOTLY_PASSWORD)
-  const times = []
-  const scores = []
+  // const times = []
+  // const scores = []
 
-  // Calculate scores from emotions
-  for (let x in pitchData) {
-    let people = pitchData[x].people
-    let score = 0
-    for (let y in people) {
-      let person = people[y]
-      for (let emotion in person) {
-        score += person[emotion] * EMOTION_WEIGHTS[emotion]
-      }
-    }
-
-    // Compute average for timeslot
-    score /= people.length
-    times.push(x)
-    scores.push(score)
-  }
-
-  // Define plotting variables
-  const dataset = {
-    x: times,
-    y: scores,
-    type: 'scatter'
-  }
-
-  const graphLayout = {
-    title: 'Plotting Your Pitch',
-    xaxis: {
-      title: 'Time elapsed (in seconds)'
-    },
-    yaxis: {
-      title: 'Engagement Score'
-    }
-  }
-
-  const graphParams = {
-    layout: graphLayout,
-    filename: 'Plotting Your Pitch',
-    fileopt: 'overwrite'
-  }
-
-  plotly.plot([dataset], graphParams, (err, msg) => {
-    if (err) console.log(err)
-    else res.send(msg)
-  })
-
-  // /* FROM BOAS */
-  // // Post data to DOM
-  // let data = emotionData
-
-  // let person;
-  // let numPeople;
-  // let score = 0
-  // let scores = []
-  // let times = []
-
-  // for (i = 0; i < data.length; i++) {
-  //   numPeople = data[i].people.length
-  //   for (j = 0; j < numPeople; j++) {
-  //     person = data[i].people[j]
-  //     score += person['anger'] * (-10)
-  //     score += person['contempt'] * (-10)
-  //     score += person['disgust'] * (-10)
-  //     score += person['fear'] * (-10)
-  //     score += person['happiness'] * 10
-  //     score += person['sadness'] * (-10)
-  //     score += person['surprise'] * 5
+  // // Calculate scores from emotions
+  // for (let x in pitchData) {
+  //   let people = pitchData[x].people
+  //   let score = 0
+  //   for (let y in people) {
+  //     let person = people[y]
+  //     for (let emotion in person) {
+  //       score += person[emotion] * EMOTION_WEIGHTS[emotion]
+  //     }
   //   }
 
-  //   score = score / numPeople
+  //   // Compute average for timeslot
+  //   score /= people.length
+  //   times.push(x)
   //   scores.push(score)
-  //   times.push(i)
-  //   score = 0
   // }
 
-  // const trace = {
+  // // Define plotting variables
+  // const dataset = {
   //   x: times,
   //   y: scores,
   //   type: 'scatter'
   // }
 
-  // let graphLayout = {
-  //   title: "Plotting Your Pitch",
+  // const graphLayout = {
+  //   title: 'Plotting Your Pitch',
   //   xaxis: {
-  //     title: "Time elapsed (in seconds)",
+  //     title: 'Time elapsed (in seconds)'
   //   },
   //   yaxis: {
-  //     title: "Engagement Score"
+  //     title: 'Engagement Score'
   //   }
   // }
 
-  // let graphParams = {
+  // const graphParams = {
   //   layout: graphLayout,
-  //   filename: 'basic-line',
+  //   filename: 'Plotting Your Pitch',
   //   fileopt: 'overwrite'
   // }
 
-  // plotly.plot([trace], graphParams, (err, msg) => {
-  //   res.send(msg)
+  // plotly.plot([dataset], graphParams, (err, msg) => {
+  //   if (err) console.log(err)
+  //   else res.send(msg)
   // })
-
-  // let html = ""
-
-  // for (i in scores) {
-  //   html += `Time ${times[i] * 30} \t Score ${scores[i]} <br />`
-  // }
-
-  // res.send(html)
 
   /* FROM BOAS */
+  // Post data to DOM
+  let data = emotionData
 
-  // // Post data to DOM
-  // let data = JSON.stringify(emotionData)
-  // const pyshell = new PyShell('graph.py', { args: [data]})  
+  let person;
+  let numPeople;
+  let score = 0
+  let scores = []
+  let times = []
 
-  // let result = ""
+  for (i = 0; i < data.length; i++) {
+    numPeople = data[i].people.length
+    for (j = 0; j < numPeople; j++) {
+      person = data[i].people[j]
+      score += person['anger'] * (-10)
+      score += person['contempt'] * (-10)
+      score += person['disgust'] * (-10)
+      score += person['fear'] * (-10)
+      score += person['happiness'] * 10
+      score += person['sadness'] * (-10)
+      score += person['surprise'] * 5
+    }
 
-  // pyshell.on('message', (msg) => result += msg)
-  // pyshell.end((err) => {
-  //   if (err) {
-  //     // throw err
-  //     res.send(err)
-  //   } else {
-  //     res.send(result)
-  //   }
-  // })
+    score = score / numPeople
+    scores.push(score)
+    times.push(i)
+    score = 0
+  }
 
-  // res.send(JSON.stringify(emotionData))
+  const trace = {
+    x: times,
+    y: scores,
+    type: 'scatter'
+  }
+
+  let graphLayout = {
+    title: "Plotting Your Pitch",
+    xaxis: {
+      title: "Time elapsed (in seconds)",
+    },
+    yaxis: {
+      title: "Engagement Score"
+    }
+  }
+
+  let graphParams = {
+    layout: graphLayout,
+    filename: 'basic-line',
+    fileopt: 'overwrite'
+  }
+
+  plotly.plot([trace], graphParams, (err, msg) => {
+    res.send(msg)
+  })
 })
 
 // Express app listening on port
