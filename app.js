@@ -27,19 +27,19 @@ app.get('/', (req, res) => {
 app.get('/upload', (req, res) => {
   // Post data to DOM
 
-  let sampleData = "Hello, world!!"
-  const pyshell = new PyShell('graph.py')  
+  // let sampleData = "Hello, world!!"
+  // const pyshell = new PyShell('graph.py')  
 
-  let result = ""
+  // let result = ""
 
-  pyshell.send(sampleData)
-  pyshell.on('message', (msg) => result += msg)
-  pyshell.end('end', (err) => {
-    if (err) throw err
-    res.send(result)
-  })
+  // pyshell.send(sampleData)
+  // pyshell.on('message', (msg) => result += msg)
+  // pyshell.end('end', (err) => {
+  //   if (err) throw err
+  //   res.send(result)
+  // })
 
-  // res.send(JSON.stringify(emotionData))
+  res.send(JSON.stringify(emotionData))
 })
 
 app.post('/upload', (req, res) => {
