@@ -45,7 +45,7 @@ app.get('/upload', (req, res) => {
       score += person['disgust'] * (-10)
       score += person['fear'] * (-10)
       score += person['happiness'] * 10
-      score += person['sadness'] * (-5)
+      score += person['sadness'] * (-10)
       score += person['surprise'] * 5
     }
 
