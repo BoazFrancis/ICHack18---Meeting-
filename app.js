@@ -77,14 +77,14 @@ app.post('/upload', (req, res) => {
     let currEmotions = {}
     currEmotions.timeStamp = timeStamp++
 
-    curr.people = data.map((people) => people.scores)
+    currEmotions.people = data.map((people) => people.scores)
     // people = []
     // for (i in data) {
     //   people.push(data[i].scores)
     // }
 
     // Accumulate current emotion data
-    pitchData.push(curr)
+    pitchData.push(currEmotions)
   })
 })
 
