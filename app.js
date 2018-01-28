@@ -92,56 +92,7 @@ app.post('/upload', (req, res) => {
 app.get('/upload', (req, res) => {
   // Initialise plot.ly
   const plotly = require('plotly')(PLOTLY_USERNAME, PLOTLY_PASSWORD)
-  // const times = []
-  // const scores = []
-
-  // // Calculate scores from emotions
-  // for (let x in pitchData) {
-  //   let people = pitchData[x].people
-  //   let score = 0
-  //   for (let y in people) {
-  //     let person = people[y]
-  //     for (let emotion in person) {
-  //       score += person[emotion] * EMOTION_WEIGHTS[emotion]
-  //     }
-  //   }
-
-  //   // Compute average for timeslot
-  //   score /= people.length
-  //   times.push(x)
-  //   scores.push(score)
-  // }
-
-  // // Define plotting variables
-  // const dataset = {
-  //   x: times,
-  //   y: scores,
-  //   type: 'scatter'
-  // }
-
-  // const graphLayout = {
-  //   title: 'Plotting Your Pitch',
-  //   xaxis: {
-  //     title: 'Time elapsed (in seconds)'
-  //   },
-  //   yaxis: {
-  //     title: 'Engagement Score'
-  //   }
-  // }
-
-  // const graphParams = {
-  //   layout: graphLayout,
-  //   filename: 'Plotting Your Pitch',
-  //   fileopt: 'overwrite'
-  // }
-
-  // plotly.plot([dataset], graphParams, (err, msg) => {
-  //   if (err) console.log(err)
-  //   else res.send(msg)
-  // })
-
-  /* FROM BOAS */
-  // Post data to DOM
+  
   let data = pitchData
 
   let person;
